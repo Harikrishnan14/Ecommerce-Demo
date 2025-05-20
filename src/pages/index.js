@@ -17,7 +17,7 @@ export default function Home({ categories }) {
       </Head>
 
       <div className="w-full overflow-hidden">
-        <Image src={Hero} alt="Home" className=" w-full overflow-hidden" />
+        <Image src={Hero} priority={true} alt="Home" className="w-full height-auto overflow-hidden" />
       </div>
 
       <section className="text-gray-600 body-font">
