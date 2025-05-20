@@ -1,6 +1,12 @@
 import Head from "next/head";
+import Hero from '../assets/imgs/Hero.jpg'
+import Image from "next/image";
+import Link from "next/link";
+import CatImg from '../assets/imgs/category.png'
+import { useRouter } from "next/router";
 
-export default function Home() {
+export default function Home({ categories }) {
+  const router = useRouter()
   return (
     <>
       <Head>
@@ -10,11 +16,47 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div>
-        <h1 className="text-3xl font-bold underline">
-          Hello world!
-        </h1>
+      <div className="w-full overflow-hidden">
+        <Image src={Hero} alt="Home" className=" w-full overflow-hidden" />
       </div>
+
+      <section className="text-gray-600 body-font">
+        <div className="container px-5 py-10 md:py-24 mx-auto">
+          <div className="flex flex-wrap w-full mb-6 md:mb-20">
+            <div className="lg:w-1/2 w-full mb-6 lg:mb-0">
+              <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Top Categories</h1>
+              <div className="h-1 w-20 bg-indigo-500 rounded"></div>
+            </div>
+            <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">Explore our most popular categories, curated to help you find what you love quickly and easily.</p>
+          </div>
+          <div className="flex flex-wrap md:-m-4 mb-6 md:mb-12">
+            {categories?.map((item) => (
+              <Link href={`/products/${item?.slug}`} className="xl:w-1/4 md:w-1/2 p-4" key={item?.slug}>
+                <div className="bg-gray-100 p-6 rounded-lg">
+                  <Image className="h-40 rounded w-full object-cover object-center mb-6" src={CatImg} alt="category" />
+                  <h2 className="text-lg text-gray-900 font-medium title-font text-center">{item?.name}</h2>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className="flex justify-center">
+            <button onClick={() => router.push('/products')} className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none cursor-pointer hover:bg-indigo-600 rounded">
+              See All Products
+            </button>
+          </div>
+        </div>
+      </section>
+
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const response = await fetch('https://dummyjson.com/products/categories')
+  const categories = await response.json()
+  return {
+    props: {
+      categories
+    }
+  };
 }
