@@ -4,8 +4,6 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 const IndividualProduct = ({ product, similiarProducts }) => {
-    console.log(product);
-
     return (
         <section className="text-gray-600 body-font overflow-hidden">
             <div className="container px-5 py-10 md:py-15 mx-auto">
