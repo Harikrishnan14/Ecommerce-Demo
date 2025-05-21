@@ -49,6 +49,7 @@ const slug = ({ products: initialProducts }) => {
         <section className="text-gray-600 body-font">
             <div className="container px-5 py-14 mx-auto">
                 <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: "2rem" }}>
+                    <Link href={"/"} className="text-gray-600">Home</Link>
                     <Link href={"/products"} className="text-gray-600">Products</Link>
                     <span className="text-gray-800 font-semibold">{location.slug.charAt(0).toUpperCase() + location.slug.slice(1)}</span>
                 </Breadcrumbs>
