@@ -4,8 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import CatImg from '../assets/imgs/category.png'
 import { useRouter } from "next/router";
+import ProductCard from "@/components/ProductCard";
 
-export default function Home({ categories }) {
+export default function Home({ categories, products }) {
   const router = useRouter()
   return (
     <>
@@ -39,6 +40,16 @@ export default function Home({ categories }) {
               </Link>
             ))}
           </div>
+          <section className="text-gray-600 body-font">
+            <div className="container px-5 py-14 mx-auto">
+              <h1 className="sm:text-3xl text-2xl font-medium title-font mb-8 text-gray-900">Featured Products</h1>
+              <div className="flex flex-wrap -m-4">
+                {products?.products?.map((item) => (
+                  <ProductCard data={item} key={item.id} />
+                ))}
+              </div>
+            </div>
+          </section>
           <div className="flex justify-center">
             <button onClick={() => router.push('/products')} className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none cursor-pointer hover:bg-indigo-600 rounded">
               See All Products
@@ -52,11 +63,14 @@ export default function Home({ categories }) {
 }
 
 export async function getServerSideProps() {
-  const response = await fetch('https://dummyjson.com/products/categories')
-  const categories = await response.json()
+  const catResponse = await fetch('https://dummyjson.com/products/categories')
+  const prodResponse = await fetch('https://dummyjson.com/products?limit=8')
+  const categories = await catResponse.json()
+  const products = await prodResponse.json()
   return {
     props: {
-      categories
+      categories: categories,
+      products: products
     }
   };
 }
