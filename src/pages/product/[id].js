@@ -3,7 +3,9 @@ import React from 'react'
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
-const IndividualProduct = ({ product }) => {
+const IndividualProduct = ({ product, similiarProducts }) => {
+    console.log(similiarProducts);
+
     return (
         <section className="text-gray-600 body-font overflow-hidden">
             <div className="container px-5 py-10 md:py-15 mx-auto">
@@ -91,74 +93,83 @@ const IndividualProduct = ({ product }) => {
 
             <div className="container px-5 py-10 md:py-15 mx-auto">
                 <h3 className="text-gray-900 text-3xl title-font font-medium mb-6">Similiar Products</h3>
-                <Carousel
-                    additionalTransfrom={0}
-                    arrows
-                    autoPlaySpeed={3000}
-                    centerMode={false}
-                    className=""
-                    containerClass="container-with-dots"
-                    dotListClass=""
-                    draggable
-                    focusOnSelect={false}
-                    infinite
-                    itemClass=""
-                    keyBoardControl
-                    minimumTouchDrag={80}
-                    pauseOnHover
-                    renderArrowsWhenDisabled={false}
-                    renderButtonGroupOutside={false}
-                    renderDotsOutside={false}
-                    responsive={{
-                        desktop: {
-                            breakpoint: {
-                                max: 3000,
-                                min: 1024
+                {similiarProducts?.products?.length > 0 ? (
+                    <Carousel
+                        additionalTransfrom={0}
+                        arrows
+                        autoPlaySpeed={3000}
+                        centerMode={false}
+                        className=""
+                        containerClass="container-with-dots"
+                        dotListClass=""
+                        draggable
+                        focusOnSelect={false}
+                        infinite
+                        itemClass=""
+                        keyBoardControl
+                        minimumTouchDrag={80}
+                        pauseOnHover
+                        renderArrowsWhenDisabled={false}
+                        renderButtonGroupOutside={false}
+                        renderDotsOutside={false}
+                        responsive={{
+                            desktop: {
+                                breakpoint: {
+                                    max: 3000,
+                                    min: 1024
+                                },
+                                items: 3,
+                                partialVisibilityGutter: 40
                             },
-                            items: 3,
-                            partialVisibilityGutter: 40
-                        },
-                        mobile: {
-                            breakpoint: {
-                                max: 464,
-                                min: 0
+                            mobile: {
+                                breakpoint: {
+                                    max: 464,
+                                    min: 0
+                                },
+                                items: 1,
+                                partialVisibilityGutter: 30
                             },
-                            items: 1,
-                            partialVisibilityGutter: 30
-                        },
-                        tablet: {
-                            breakpoint: {
-                                max: 1024,
-                                min: 464
-                            },
-                            items: 2,
-                            partialVisibilityGutter: 30
-                        }
-                    }}
-                    rewind={false}
-                    rewindWithAnimation={false}
-                    rtl={false}
-                    shouldResetAutoplay
-                    showDots={false}
-                    sliderClass=""
-                    slidesToSlide={1}
-                    swipeable
-                >
-                    {Array.from({ length: 5 }).map((_, index) => (
-                        <ProductCard data={product} key={index} />
-                    ))}
-                </Carousel>
+                            tablet: {
+                                breakpoint: {
+                                    max: 1024,
+                                    min: 464
+                                },
+                                items: 2,
+                                partialVisibilityGutter: 30
+                            }
+                        }}
+                        rewind={false}
+                        rewindWithAnimation={false}
+                        rtl={false}
+                        shouldResetAutoplay
+                        showDots={false}
+                        sliderClass=""
+                        slidesToSlide={1}
+                        swipeable
+                    >
+                        {similiarProducts?.products?.map((prod) => (
+                            <ProductCard data={prod} key={prod.id} />
+                        ))}
+                    </Carousel>
+                ) : (
+                    <div className="w-full text-center py-8 text-gray-500 font-medium">
+                        No similiar products found!
+                    </div>
+                )}
             </div>
         </section>
     )
 }
 
 export async function getServerSideProps(context) {
-    const response = await fetch(`https://dummyjson.com/products/${context.query.id}`)
-    const product = await response.json()
+    const prodRes = await fetch(`https://dummyjson.com/products/${context.query.id}`)
+    const product = await prodRes.json()
+    const simProdRes = await fetch(`https://dummyjson.com/products/category/${product.category}?limit=8`)
+    const similiarProducts = await simProdRes.json()
     return {
         props: {
-            product
+            product: product,
+            similiarProducts: similiarProducts
         }
     };
 }
