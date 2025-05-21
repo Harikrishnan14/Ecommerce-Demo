@@ -30,7 +30,7 @@ export default function Home({ categories, products }) {
             </div>
             <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">Explore our most popular categories, curated to help you find what you love quickly and easily.</p>
           </div>
-          <div className="flex flex-wrap md:-m-4 mb-6 md:mb-12">
+          <div className="flex flex-wrap justify-center md:-m-4 mb-6 md:mb-12">
             {categories?.map((item) => (
               <Link href={`/products/${item?.slug}`} className="xl:w-1/4 md:w-1/2 p-4" key={item?.slug}>
                 <div className="bg-gray-100 p-6 rounded-lg">

@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import React from 'react'
 
-const ProductCard = ({ data }) => {
+const ProductCard = ({ data }) => {    
     return (
-        <Link href={`/product/${data?.slug}`} className="lg:w-1/4 md:w-1/2 p-4 w-full shadow-sm md:shadow-none">
+        <Link href={`/product/${data?.id}`} className="lg:w-1/4 md:w-1/2 p-4 w-full shadow-sm md:shadow-none">
             <div className="block relative h-48 rounded overflow-hidden">
                 <img alt="ecommerce" className="object-contain object-center w-full h-full block" src={data?.images[0]} />
             </div>
