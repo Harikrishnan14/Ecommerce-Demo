@@ -15,7 +15,7 @@ const style = {
     boxShadow: 24,
     p: 4,
 };
-const PriceBreakdown = ({ open, handleClose }) => {
+const PriceBreakdown = ({ open, handleClose, totalPrice, discountAmount, tax, cart, finalTotal, promoCode, setPromoCode, handleApplyPromo }) => {
     return (
         <Modal
             open={open}
@@ -28,27 +28,27 @@ const PriceBreakdown = ({ open, handleClose }) => {
                 <div className="mt-6 max-w-md ml-auto bg-gray-100 rounded-lg p-6 space-y-3 text-gray-800">
                     <div className="flex justify-between">
                         <span>MRP</span>
-                        <span>$120.00</span>
+                        <span>${totalPrice?.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
                         <span>Discount</span>
-                        <span className="text-green-600">- $10.00</span>
+                        <span className="text-green-600">- ${discountAmount.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
                         <span>Tax</span>
-                        <span>$1.98</span>
+                        <span>${tax.toFixed(2)}</span>
                     </div>
                     <hr className="my-2 border-gray-300" />
                     <div className="flex justify-between font-semibold text-lg">
                         <span>Total</span>
-                        <span>$111.98</span>
+                        <span>{cart?.length > 0 ? `$${finalTotal.toFixed(2)}` : `$0.00`}</span>
                     </div>
 
                     <div className="mt-4">
                         <label htmlFor="promo" className="block text-sm font-medium text-gray-700 mb-1">Promo Code</label>
                         <div className="flex">
-                            <input type="text" id="promo" placeholder="Enter code" className="w-full border border-gray-300 rounded-l px-3 py-2 text-sm focus:outline-none" />
-                            <button className="bg-indigo-500 text-white px-4 rounded-r hover:bg-indigo-600 text-sm">Apply</button>
+                            <input type="text" id="promo" placeholder="Enter code" className="w-full border border-gray-300 rounded-l px-3 py-2 text-sm focus:outline-none" value={promoCode} onChange={(e) => setPromoCode(e.target.value)} />
+                            <button disabled={cart?.length === 0} className="bg-indigo-500 text-white px-4 rounded-r hover:bg-indigo-600 text-sm disabled:cursor-not-allowed disabled:bg-indigo-300" onClick={handleApplyPromo}>Apply</button>
                         </div>
                     </div>
                 </div>
