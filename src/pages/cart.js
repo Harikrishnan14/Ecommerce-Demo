@@ -7,7 +7,7 @@ const Cart = () => {
     const [open, setOpen] = useState(false)
     const [cart, setCart] = useState()
 
-    const { key, removeFromCart } = useContext(CartContext)
+    const { key, removeFromCart, handleQty } = useContext(CartContext)
 
     const handleOpen = () => {
         setOpen(true)
@@ -49,9 +49,9 @@ const Cart = () => {
                                         <tr className="border-b" key={index}>
                                             <td className="py-6 px-4">{item?.title}</td>
                                             <td className="py-6 px-4 flex items-center">
-                                                <button className="bg-gray-300 px-2 rounded-l hover:bg-gray-400">-</button>
+                                                <button className="bg-gray-300 px-2 rounded-l hover:bg-gray-400" onClick={() => handleQty({ title: item.title, selectedColor: item.selectedColor, selectedSize: item.selectedSize }, "dec")}>-</button>
                                                 <span className="px-3">{item?.quantity}</span>
-                                                <button className="bg-gray-300 px-2 rounded-r hover:bg-gray-400">+</button>
+                                                <button className="bg-gray-300 px-2 rounded-r hover:bg-gray-400" onClick={() => handleQty({ title: item.title, selectedColor: item.selectedColor, selectedSize: item.selectedSize }, "inc")}>+</button>
                                             </td>
                                             <td className="py-6 px-4">${(item?.quantity * item?.price).toFixed(2)}</td>
                                             <td className="py-6 px-4">
