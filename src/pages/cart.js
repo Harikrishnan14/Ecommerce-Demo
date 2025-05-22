@@ -1,15 +1,27 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import PriceBreakdown from '@/components/modals/PriceBreakdown';
+import { CartContext } from '@/contexts/CartContext';
 
 const Cart = () => {
     const [open, setOpen] = useState(false)
+    const [cart, setCart] = useState()
+
+    const { key, removeFromCart } = useContext(CartContext)
+
     const handleOpen = () => {
         setOpen(true)
     }
+
     const handleClose = () => {
         setOpen(false)
     }
+
+    useEffect(() => {
+        const cart = JSON.parse(localStorage.getItem('cart'))
+        setCart(cart)
+    }, [key])
+
     return (
         <section className="text-gray-600 body-font">
             <div className="container px-5 py-10 md:py-15 mx-auto">
@@ -26,22 +38,34 @@ const Cart = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Array.from({ length: 10 }).map((_, index) => (
-                                    <tr className="border-b" key={index}>
-                                        <td className="py-6 px-4">Animated Night Hill</td>
-                                        <td className="py-6 px-4 flex items-center">
-                                            <button className="bg-gray-300 px-2 rounded-l hover:bg-gray-400">-</button>
-                                            <span className="px-3">4</span>
-                                            <button className="bg-gray-300 px-2 rounded-r hover:bg-gray-400">+</button>
-                                        </td>
-                                        <td className="py-6 px-4">$58.00</td>
-                                        <td className="py-6 px-4">
-                                            <button className="text-red-500 hover:underline">
-                                                <DeleteForeverIcon />
-                                            </button>
+                                {cart?.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={4} className="text-center py-6">
+                                            Cart is empty
                                         </td>
                                     </tr>
-                                ))}
+                                ) : (
+                                    cart?.map((item, index) => (
+                                        <tr className="border-b" key={index}>
+                                            <td className="py-6 px-4">{item?.title}</td>
+                                            <td className="py-6 px-4 flex items-center">
+                                                <button className="bg-gray-300 px-2 rounded-l hover:bg-gray-400">-</button>
+                                                <span className="px-3">{item?.quantity}</span>
+                                                <button className="bg-gray-300 px-2 rounded-r hover:bg-gray-400">+</button>
+                                            </td>
+                                            <td className="py-6 px-4">${(item?.quantity * item?.price).toFixed(2)}</td>
+                                            <td className="py-6 px-4">
+                                                <button className="text-red-500 hover:underline cursor-pointer" onClick={() => removeFromCart({
+                                                    title: item?.title,
+                                                    selectedColor: item?.selectedColor,
+                                                    selectedSize: item?.selectedSize
+                                                })}>
+                                                    <DeleteForeverIcon />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
                             </tbody>
                         </table>
                     </div>

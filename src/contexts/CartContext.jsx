@@ -32,8 +32,31 @@ const CartProvider = ({ children }) => {
         setKey(Math.random())
     };
 
+    const removeFromCart = (item) => {
+        let existingCart;
+
+        try {
+            const storedCart = JSON.parse(localStorage.getItem("cart"));
+            existingCart = Array.isArray(storedCart) ? storedCart : [];
+        } catch (err) {
+            existingCart = [];
+        }
+
+        const updatedCart = existingCart.filter(
+            (cartItem) =>
+                !(
+                    cartItem.title === item.title &&
+                    cartItem.selectedColor === item.selectedColor &&
+                    cartItem.selectedSize === item.selectedSize
+                )
+        );
+
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        setKey(Math.random());
+    };
+
     return (
-        <CartContext.Provider value={{ addToCart, key }}>
+        <CartContext.Provider value={{ addToCart, key, removeFromCart }}>
             {children}
         </CartContext.Provider>
     )
