@@ -45,7 +45,7 @@ const Navbar = () => {
                     <Link href={'/about'} className="mr-5 hover:text-gray-900 cursor-pointer">About</Link>
                     <Link href={'/contact'} className="mr-5 hover:text-gray-900 cursor-pointer">Contact</Link>
                 </nav>
-                <Link href={'/'} className="hidden md:inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 cursor-pointer rounded text-base mt-4 md:mt-0">
+                <Link href={'/cart'} className="hidden md:inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 cursor-pointer rounded text-base mt-4 md:mt-0">
                     <Badge badgeContent={10} color="error">
                         <ShoppingCartIcon />
                     </Badge>

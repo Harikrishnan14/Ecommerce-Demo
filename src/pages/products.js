@@ -4,7 +4,7 @@ import { Breadcrumbs, FormControl, InputLabel, MenuItem, Select, Skeleton } from
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 
-const products = ({ products: initialProducts }) => {
+const Products = ({ products: initialProducts }) => {
     const [products, setProducts] = useState(initialProducts?.products || []);
     const [skip, setSkip] = useState(12);
     const [loading, setLoading] = useState(false);
@@ -172,4 +172,4 @@ export async function getServerSideProps() {
     };
 }
 
-export default products
+export default Products
