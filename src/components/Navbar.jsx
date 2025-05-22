@@ -1,11 +1,29 @@
 import { Badge } from '@mui/material'
 import Link from 'next/link'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { CartContext } from '@/contexts/CartContext';
 
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [cartCount, setCartCount] = useState(0);
     const menuRef = useRef(null);
+
+    const { key } = useContext(CartContext)
+
+    useEffect(() => {
+        const storedCart = JSON.parse(localStorage.getItem('cart'));
+        try {
+            if (Array.isArray(storedCart)) {
+                const totalQuantity = storedCart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+                setCartCount(totalQuantity);
+            } else {
+                setCartCount(0);
+            }
+        } catch (error) {
+            setCartCount(0);
+        }
+    }, [key])
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -46,7 +64,7 @@ const Navbar = () => {
                     <Link href={'/contact'} className="mr-5 hover:text-gray-900 cursor-pointer">Contact</Link>
                 </nav>
                 <Link href={'/cart'} className="hidden md:inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 cursor-pointer rounded text-base mt-4 md:mt-0">
-                    <Badge badgeContent={10} color="error">
+                    <Badge badgeContent={cartCount} color="error">
                         <ShoppingCartIcon />
                     </Badge>
                 </Link>
@@ -66,7 +84,7 @@ const Navbar = () => {
                                 Contact
                             </Link>
                             <Link href={'/cart'} className="flex title-font font-medium items-center text-gray-900" onClick={() => setMenuOpen(false)}>
-                                Cart ( 10 )
+                                Cart ( {cartCount} )
                             </Link>
                         </nav>
                     </div>

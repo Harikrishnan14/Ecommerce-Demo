@@ -1,18 +1,10 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
 const CartContext = createContext()
 
 const CartProvider = ({ children }) => {
 
-    const saveCart = (myCart) => {
-        localStorage.setItem("cart", JSON.stringify(myCart))
-        let subT = 0
-        let keys = Object.keys(myCart)
-        for (let i = 0; i < keys.length; i++) {
-            subT += myCart[keys[i]].price * myCart[keys[i]].qty
-        }
-        setSubTotal(subT)
-    }
+    const [key, setKey] = useState()
 
     const addToCart = (item) => {
         let existingCart;
@@ -37,10 +29,11 @@ const CartProvider = ({ children }) => {
         }
 
         localStorage.setItem('cart', JSON.stringify(existingCart));
+        setKey(Math.random())
     };
 
     return (
-        <CartContext.Provider value={{ addToCart }}>
+        <CartContext.Provider value={{ addToCart, key }}>
             {children}
         </CartContext.Provider>
     )
