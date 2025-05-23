@@ -60,8 +60,7 @@ const Navbar = () => {
                 <nav className="md:ml-auto md:mr-auto hidden md:flex flex-wrap items-center text-base justify-center">
                     <Link href={'/'} className="mr-5 hover:text-gray-900 cursor-pointer">Home</Link>
                     <Link href={'/products'} className="mr-5 hover:text-gray-900 cursor-pointer">Products</Link>
-                    <Link href={'/about'} className="mr-5 hover:text-gray-900 cursor-pointer">About</Link>
-                    <Link href={'/contact'} className="mr-5 hover:text-gray-900 cursor-pointer">Contact</Link>
+                    <Link href={'/wishlist'} className="mr-5 hover:text-gray-900 cursor-pointer">Wishlist</Link>
                 </nav>
                 <Link href={'/cart'} className="hidden md:inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 cursor-pointer rounded text-base mt-4 md:mt-0">
                     <Badge badgeContent={cartCount} color="error">
@@ -77,11 +76,8 @@ const Navbar = () => {
                             <Link href={'/products'} className="flex title-font font-medium items-center text-gray-900" onClick={() => setMenuOpen(false)}>
                                 Products
                             </Link>
-                            <Link href={'/about'} className="flex title-font font-medium items-center text-gray-900" onClick={() => setMenuOpen(false)}>
-                                About
-                            </Link>
-                            <Link href={'/contact'} className="flex title-font font-medium items-center text-gray-900" onClick={() => setMenuOpen(false)}>
-                                Contact
+                            <Link href={'/wishlist'} className="flex title-font font-medium items-center text-gray-900" onClick={() => setMenuOpen(false)}>
+                                Wishlist
                             </Link>
                             <Link href={'/cart'} className="flex title-font font-medium items-center text-gray-900" onClick={() => setMenuOpen(false)}>
                                 Cart ( {cartCount} )
