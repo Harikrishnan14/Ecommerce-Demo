@@ -89,26 +89,38 @@ const CartProvider = ({ children }) => {
     };
 
     const handleWishlist = (item) => {
-    let existingWishlist;
+        let existingWishlist;
 
-    try {
-        const storedWishlist = JSON.parse(localStorage.getItem('wishlist'));
-        existingWishlist = Array.isArray(storedWishlist) ? storedWishlist : [];
-    } catch (err) {
-        existingWishlist = [];
-    }
+        try {
+            const storedWishlist = JSON.parse(localStorage.getItem('wishlist'));
+            existingWishlist = Array.isArray(storedWishlist) ? storedWishlist : [];
+        } catch (err) {
+            existingWishlist = [];
+        }
 
-    const existingIndex = existingWishlist.findIndex(wishlistItem => wishlistItem.id === item.id);
+        const existingIndex = existingWishlist.findIndex(wishlistItem =>
+            wishlistItem.id === item.id &&
+            wishlistItem.selectedColor === item.selectedColor &&
+            wishlistItem.selectedSize === item.selectedSize
+        );
 
-    if (existingIndex !== -1) {
-        existingWishlist.splice(existingIndex, 1);
-    } else {
-        existingWishlist.push(item);
-    }
+        if (existingIndex !== -1) {
+            existingWishlist.splice(existingIndex, 1);
+        } else {
+            const wishlistItem = {
+                id: item.id,
+                title: item.title,
+                images: item.images,
+                selectedSize: item.selectedSize,
+                selectedColor: item.selectedColor,
+                price: item.price
+            };
+            existingWishlist.push(wishlistItem);
+        }
 
-    localStorage.setItem('wishlist', JSON.stringify(existingWishlist));
-    setKey(Math.random());
-};
+        localStorage.setItem('wishlist', JSON.stringify(existingWishlist));
+        setKey(Math.random());
+    };
 
     return (
         <CartContext.Provider value={{ addToCart, key, removeFromCart, handleQty, handleWishlist }}>

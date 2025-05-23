@@ -18,7 +18,7 @@ const IndividualProduct = ({ product, similiarProducts }) => {
             const wishlist = Array.isArray(storedWishlist) ? storedWishlist : [];
 
             return wishlist.some(wishlistItem =>
-                wishlistItem.title === item.title &&
+                wishlistItem.id === item.id &&
                 wishlistItem.selectedColor === item.selectedColor &&
                 wishlistItem.selectedSize === item.selectedSize
             );
@@ -28,8 +28,12 @@ const IndividualProduct = ({ product, similiarProducts }) => {
     };
 
     useEffect(() => {
-        setWishlistStatus(isInWishlist(product));
-    }, [product, key, selectedColor, selectedOpt]);
+        setWishlistStatus(isInWishlist({
+            id: product.id,
+            selectedColor,
+            selectedSize: selectedOpt
+        }));        
+    }, [product.id, selectedColor, selectedOpt, key]);
 
     return (
         <section className="text-gray-600 body-font overflow-hidden">
@@ -110,8 +114,15 @@ const IndividualProduct = ({ product, similiarProducts }) => {
                             <button
                                 className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4 cursor-pointer"
                                 onClick={() => {
-                                    handleWishlist(product);
-                                    setWishlistStatus(true);
+                                    handleWishlist({
+                                        id: product.id,
+                                        title: product.title,
+                                        images: product.images,
+                                        selectedColor,
+                                        selectedSize: selectedOpt,
+                                        price: product.price
+                                    });
+                                    // setWishlistStatus(true);
                                 }}
                             >
                                 {wishlistStatus ? (
