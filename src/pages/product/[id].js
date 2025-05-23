@@ -1,6 +1,6 @@
 import ProductCard from '@/components/ProductCard';
 import { CartContext } from '@/contexts/CartContext';
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
@@ -8,8 +8,28 @@ const IndividualProduct = ({ product, similiarProducts }) => {
 
     const [selectedOpt, setSelectedOpt] = useState('SM')
     const [selectedColor, setSelectedColor] = useState('White')
+    const [wishlistStatus, setWishlistStatus] = useState(false);
 
-    const { addToCart } = useContext(CartContext)
+    const { addToCart, handleWishlist, key } = useContext(CartContext)
+
+    const isInWishlist = (item) => {
+        try {
+            const storedWishlist = JSON.parse(localStorage.getItem('wishlist'));
+            const wishlist = Array.isArray(storedWishlist) ? storedWishlist : [];
+
+            return wishlist.some(wishlistItem =>
+                wishlistItem.title === item.title &&
+                wishlistItem.selectedColor === item.selectedColor &&
+                wishlistItem.selectedSize === item.selectedSize
+            );
+        } catch (err) {
+            return false;
+        }
+    };
+
+    useEffect(() => {
+        setWishlistStatus(isInWishlist(product));
+    }, [product, key, selectedColor, selectedOpt]);
 
     return (
         <section className="text-gray-600 body-font overflow-hidden">
@@ -87,10 +107,22 @@ const IndividualProduct = ({ product, similiarProducts }) => {
                             >
                                 Add to Cart
                             </button>
-                            <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
-                                <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
-                                    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
-                                </svg>
+                            <button
+                                className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4 cursor-pointer"
+                                onClick={() => {
+                                    handleWishlist(product);
+                                    setWishlistStatus(true);
+                                }}
+                            >
+                                {wishlistStatus ? (
+                                    <svg fill="red" stroke="red" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
+                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6.01 4.01 4 6.5 4c1.74 0 3.41 1.01 4.13 2.44h1.74C14.09 5.01 15.76 4 17.5 4 19.99 4 22 6.01 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                    </svg>
+                                ) : (
+                                    <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
+                                        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+                                    </svg>
+                                )}
                             </button>
                         </div>
                     </div>

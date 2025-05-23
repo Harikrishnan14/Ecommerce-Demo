@@ -88,8 +88,30 @@ const CartProvider = ({ children }) => {
         setKey(Math.random());
     };
 
+    const handleWishlist = (item) => {
+    let existingWishlist;
+
+    try {
+        const storedWishlist = JSON.parse(localStorage.getItem('wishlist'));
+        existingWishlist = Array.isArray(storedWishlist) ? storedWishlist : [];
+    } catch (err) {
+        existingWishlist = [];
+    }
+
+    const existingIndex = existingWishlist.findIndex(wishlistItem => wishlistItem.id === item.id);
+
+    if (existingIndex !== -1) {
+        existingWishlist.splice(existingIndex, 1);
+    } else {
+        existingWishlist.push(item);
+    }
+
+    localStorage.setItem('wishlist', JSON.stringify(existingWishlist));
+    setKey(Math.random());
+};
+
     return (
-        <CartContext.Provider value={{ addToCart, key, removeFromCart, handleQty }}>
+        <CartContext.Provider value={{ addToCart, key, removeFromCart, handleQty, handleWishlist }}>
             {children}
         </CartContext.Provider>
     )
