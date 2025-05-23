@@ -11,6 +11,14 @@ export default function App({ Component, pageProps }) {
   const router = useRouter()
   const previousPath = useRef(router.asPath);
 
+  const knownRoutes = ["/", "/products", /^\/product\/\d+$/, /^\/products\/[^/]+$/, "/wishlist", "/cart"];
+
+  const showFooter = knownRoutes.some(route =>
+    typeof route === "string"
+      ? route === router.pathname
+      : route instanceof RegExp && route.test(router.pathname)
+  );
+
   useEffect(() => {
     const handleRouteChangeStart = (url) => {
       if (url !== previousPath.current) {
@@ -44,7 +52,7 @@ export default function App({ Component, pageProps }) {
       />
       <Navbar />
       <Component {...pageProps} />
-      <Footer />
+      {showFooter && <Footer />}
     </CartProvider>
   </>
 }
