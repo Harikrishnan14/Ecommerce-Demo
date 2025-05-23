@@ -6,7 +6,7 @@ const Wishlist = () => {
     const [wishlist, setWishlist] = useState({})
     const router = useRouter()
 
-    const { key, handleWishlist } = useContext(CartContext)
+    const { key, handleWishlist, addToCart } = useContext(CartContext)
 
     useEffect(() => {
         const storedWishlist = localStorage.getItem('wishlist')
@@ -38,7 +38,13 @@ const Wishlist = () => {
                                 <h2 className="md:hidden text-2xl font-medium text-gray-900 title-font mb-2">{wishlist[item]?.title}</h2>
                                 <p className="leading-relaxed text-lg font-semibold text-gray-700 mb-2">Category: <span className='text-gray-500 font-normal'>{wishlist[item]?.category}</span></p>
                                 <p className="md:hidden leading-relaxed text-lg font-semibold text-gray-700 mb-2">Price: <span className='text-gray-500 font-normal'>${wishlist[item]?.price}</span></p>
-                                <button className="mt-4 me-5 text-red-600 hover:text-red-800 font-medium underline cursor-pointer">
+                                <button className="mt-4 me-5 text-red-600 hover:text-red-800 font-medium underline cursor-pointer" onClick={() => addToCart({
+                                    title: wishlist[item]?.title,
+                                    quantity: 1,
+                                    selectedColor: wishlist[item].selectedColor,
+                                    selectedSize: wishlist[item].selectedSize,
+                                    price: wishlist[item].price
+                                })}>
                                     Add to Cart
                                 </button>
                                 <button className="mt-4 text-red-600 hover:text-red-800 font-medium underline cursor-pointer" onClick={() => handleWishlist({
