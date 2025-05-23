@@ -7,6 +7,23 @@ const CartProvider = ({ children }) => {
     const [key, setKey] = useState()
 
     const addToCart = (item) => {
+        try {
+            const storedWishlist = JSON.parse(localStorage.getItem('wishlist'));
+            let existingWishlist = Array.isArray(storedWishlist) ? storedWishlist : [];
+
+            const wishlistIndex = existingWishlist.findIndex(wishlistItem =>
+                wishlistItem.title === item.title &&
+                wishlistItem.selectedColor === item.selectedColor &&
+                wishlistItem.selectedSize === item.selectedSize
+            );
+
+            if (wishlistIndex !== -1) {
+                existingWishlist.splice(wishlistIndex, 1);
+                localStorage.setItem('wishlist', JSON.stringify(existingWishlist));
+            }
+        } catch (err) {
+        }
+
         let existingCart;
 
         try {
